@@ -6,7 +6,9 @@ import com.example.firstjavadbproject.repository.StudentRepository;
 import com.example.firstjavadbproject.util.AppUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,21 @@ public class StudentService {
 
     public ResponseDTO createStudent(Student student) {
         ResponseDTO responseDTO = new ResponseDTO();
+        Student std = studentRepository.save(student);
+        if (std != null) {
+            responseDTO.setMessage(AppUtility.getResourceMessage("student.create.success"));
+            responseDTO.setData(std);
+        } else {
+            responseDTO.setMessage(AppUtility.getResourceMessage("student.create.error"));
+        }
+        return responseDTO;
+    }
+
+    public ResponseDTO createStudentWithPhoto(Student student, MultipartFile photo) throws IOException {
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (photo != null) {
+            student.getProfile().setPhoto(photo.getBytes());
+        }
         Student std = studentRepository.save(student);
         if (std != null) {
             responseDTO.setMessage(AppUtility.getResourceMessage("student.create.success"));

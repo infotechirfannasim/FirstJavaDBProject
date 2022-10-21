@@ -9,7 +9,7 @@ public class Student {
     @Id
     @Column(name = "ID", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "NAME")
     private String name;
@@ -20,6 +20,10 @@ public class Student {
     @Column(name = "BADGE_NAME")
     private String badgeName;
 
+    @OneToOne(targetEntity = Profile.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "PROFILE_ID")
+    private Profile profile;
+
     public Student() {
     }
 
@@ -29,11 +33,11 @@ public class Student {
         this.rollNum = rollNum;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,5 +63,13 @@ public class Student {
 
     public void setBadgeName(String badgeName) {
         this.badgeName = badgeName;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }

@@ -5,6 +5,9 @@ import com.example.firstjavadbproject.entity.Student;
 import com.example.firstjavadbproject.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("student")
@@ -30,6 +33,13 @@ public class StudentAPI {
         return studentService.createStudent(student);
     }
 
+    @RequestMapping(value = "/create-photo", method = RequestMethod.POST)
+    public ResponseDTO createStudentWithPhoto(@RequestPart("data") Student student,
+                                              @RequestPart(value = "photo", required = false) MultipartFile photo) throws IOException {
+
+        return studentService.createStudentWithPhoto(student, photo);
+    }
+
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public ResponseDTO updateStudent(@RequestBody Student student) {
 
@@ -39,7 +49,7 @@ public class StudentAPI {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseDTO deleteStudent(@PathVariable(name = "id") Long id) {
 
-       return studentService.deleteStudent(id);
+        return studentService.deleteStudent(id);
     }
 
 }
